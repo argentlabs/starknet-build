@@ -32,7 +32,7 @@ rustup override set stable && rustup update && cargo test
 
 Having installed Rust, go ahead to clone the repo, by running the command below on a terminal:
 
-`git clone `
+`git clone https://github.com/Darlington02/cairo1.0`
 
 ### Compiling and running Cairo files
 
