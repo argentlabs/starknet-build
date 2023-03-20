@@ -5,14 +5,14 @@ mod ERC20Contract {
     use starknet::get_caller_address;
     use starknet::ContractAddress;
     use starknet::ContractAddressZeroable;
-    use starknet::contract_address_try_from_felt;
+    use starknet::contract_address_try_from_felt252;
     use traits::Into;
     use traits::TryInto;
     use option::OptionTrait;
 
     struct Storage {
-        name: felt,
-        symbol: felt,
+        name: felt252,
+        symbol: felt252,
         decimals: u8,
         total_supply: u256,
         balances: LegacyMap::<ContractAddress, u256>,
@@ -27,8 +27,8 @@ mod ERC20Contract {
 
     #[constructor]
     fn constructor(
-        name_: felt,
-        symbol_: felt,
+        name_: felt252,
+        symbol_: felt252,
         decimals_: u8,
         initial_supply: u256,
         recipient: ContractAddress
@@ -36,19 +36,19 @@ mod ERC20Contract {
         name::write(name_);
         symbol::write(symbol_);
         decimals::write(decimals_);
-        assert(!recipient.is_zero(), 'ERC20: mint to the 0 address');
+        assert(recipient.is_zero(), 'ERC20: mint to the 0 address');
         total_supply::write(initial_supply);
         balances::write(recipient, initial_supply);
         Transfer(ContractAddressZeroable::zero(), recipient, initial_supply);
     }
 
     #[view]
-    fn get_name() -> felt {
+    fn get_name() -> felt252 {
         name::read()
     }
 
     #[view]
-    fn get_symbol() -> felt{
+    fn get_symbol() -> felt252 {
         symbol::read()
     }
 
