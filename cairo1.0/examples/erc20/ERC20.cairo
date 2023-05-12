@@ -95,9 +95,10 @@ mod ERC20 {
     // @param recipient the address of the receiver
     // @param amount the Uint256 representation of the transaction amount
     #[external]
-    fn transfer(recipient: felt, amount: u256) {
+    fn transfer(recipient: felt, amount: u256) -> bool {
         let sender = get_caller_address();
         transfer_helper(sender, recipient, amount);
+        true
     }
 
     // @dev transfers token on behalf of another account
@@ -105,37 +106,41 @@ mod ERC20 {
     // @param recipient the to address
     // @param amount the amount being sent
     #[external]
-    fn transfer_from(sender: felt, recipient: felt, amount: u256) {
+    fn transfer_from(sender: felt, recipient: felt, amount: u256) -> bool {
         let caller = get_caller_address();
         spend_allowance(sender, caller, amount);
         transfer_helper(sender, recipient, amount);
+        true
     }
 
     // @dev approves token to be spent on your behalf
     // @param spender address of the spender
     // @param amount amount being approved for spending
     #[external]
-    fn approve(spender: felt, amount: u256) {
+    fn approve(spender: felt, amount: u256) -> bool {
         let caller = get_caller_address();
         approve_helper(caller, spender, amount);
+        true
     }
 
     // @dev increase amount of allowed tokens to be spent on your behalf
     // @param spender address of the spender
     // @param added_value amount to be added
     #[external]
-    fn increase_allowance(spender: felt, added_value: u256) {
+    fn increase_allowance(spender: felt, added_value: u256) -> bool {
         let caller = get_caller_address();
         approve_helper(caller, spender, allowances::read((caller, spender)) + added_value);
+        true
     }
 
     // @dev increase amount of allowed tokens to be spent on your behalf
     // @param spender address of the spender
     // @param added_value amount to be added
     #[external]
-    fn decrease_allowance(spender: felt, subtracted_value: u256) {
+    fn decrease_allowance(spender: felt, subtracted_value: u256) -> bool {
         let caller = get_caller_address();
         approve_helper(caller, spender, allowances::read((caller, spender)) - subtracted_value);
+        true
     }
 
     // @dev internal function that performs the transfer logic
